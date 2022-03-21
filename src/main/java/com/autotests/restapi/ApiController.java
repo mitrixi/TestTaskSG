@@ -56,8 +56,8 @@ public class ApiController {
                 .extract().jsonPath().getString("access_token");
     }
 
-    public void getPlayerProfileData(String token, Integer playerId, int expectedStatusCode) {
-        given()
+    public PlayerModel getPlayerProfileData(String token, Integer playerId, int expectedStatusCode) {
+        return given()
                 .header("Authorization", "Bearer " + token)
                 .pathParam("playerId", playerId)
                 .get(EndPoints.PLAYERS + "/{playerId}")
