@@ -1,0 +1,51 @@
+plugins {
+    id 'java'
+    id "io.freefair.lombok" version "6.4.1"
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'io.netty:netty-all:4.1.75.Final'
+    implementation 'com.google.inject:guice:5.1.0'
+    implementation 'org.testng:testng:7.5'
+    implementation 'com.codeborne:selenide:6.3.4'
+    implementation 'io.cucumber:cucumber-java:7.2.3'
+    implementation 'io.cucumber:cucumber-testng:7.2.3'
+    implementation 'io.cucumber:cucumber-guice:7.2.3'
+    implementation 'io.rest-assured:rest-assured:4.5.1'
+}
+
+configurations {
+    cucumberRuntime {
+        extendsFrom testImplementation
+    }
+}
+
+tasks.withType(Test) {
+    useTestNG()
+}
+
+tasks.register('ui_tests', Test).configure() {
+    dependsOn assemble, testClasses
+
+    doLast {
+        javaexec {
+            main = "io.cucumber.core.cli.Main"
+            classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
+            args = [
+                    '--plugin', 'pretty',
+                    '--glue', 'com/autotests/ui/steps',
+                    'src/test/java/com/autotests/ui/features']
+        }
+    }
+}
+
+tasks.register('restapi_tests', Test).configure() {
+    filter {
+        includeTestsMatching('com.autotests.restapi*')
+    }
+}
+
