@@ -1,9 +1,11 @@
 # TestTaskSG
 
-В командной строке находясь в корне проекта запустить тесты командами:
-./gradlew ui_tests
-и
-./gradlew restapi_tests
-для UI и REST API тестов соответственно
+В командной строке находясь в корне проекта запустить тесты командами:  
 
-Необходимо, чтобы был установлен gradle wrapper
+> ./gradlew ui_tests  
+
+и  
+
+> ./gradlew restapi_tests  
+
+для UI и REST API тестов соответственно  
